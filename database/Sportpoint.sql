@@ -123,11 +123,11 @@ CREATE TABLE zona (
 );
  
 CREATE TABLE instalacion (
-    id_instalacion VARCHAR(20) NOT NULL,
+    id_instalacion VARCHAR(6) NOT NULL,
     nomInst VARCHAR(50) NOT NULL,
-    id_zona VARCHAR(20) NOT NULL,
+    id_zona VARCHAR(20) NULL,
     CONSTRAINT PK_id_instalacion PRIMARY KEY (id_instalacion),
-    CONSTRAINT instalacion_zona_FK FOREIGN KEY (id_zona)
+    CONSTRAINT instalacion_zona_FK FOREIGN KEY (id_zona) 
         REFERENCES zona(id_zona)
 );
 
