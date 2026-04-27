@@ -92,7 +92,7 @@ export class ApiService {
   }
 
   getInstalaciones(): Observable<ApiResource[]> {
-    return this.get<ApiResource[]>('instalacions');
+    return this.get<ApiResource[]>('instalaciones');
   }
 
   getZonas(): Observable<ApiResource[]> {
@@ -104,11 +104,11 @@ export class ApiService {
   }
 
   getPublicaciones(): Observable<ApiResource[]> {
-    return this.get<ApiResource[]>('publicacions');
+    return this.get<ApiResource[]>('publicaciones');
   }
 
   getInscripciones(): Observable<ApiResource[]> {
-    return this.get<ApiResource[]>('inscripcions');
+    return this.get<ApiResource[]>('inscripciones');
   }
 
   getUsuarios(): Observable<ApiResource[]> {
