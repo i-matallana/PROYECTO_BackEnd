@@ -1,9 +1,9 @@
-<!-- Plantilla principal de la aplicación Angular. Aquí se define la estructura completa de la página igual al HTML original. -->
+<!-- Plantilla principal SportPoint Angular -->
 <div class="app-root">
-  <!-- Encabezado fijo con logo y navegación principal -->
+
+  <!-- Header fijo -->
   <header>
-    <img src="assets/img/logoredondocolor.png" alt="Logo SportPoint" height="80" />
-    <!-- Menú de navegación con enlaces a las secciones principales -->
+    <img src="assets/img/logo_color.png" alt="Logo SportPoint" height="80" />
     <nav>
       <ul>
         <li><a href="#" (click)="changeSection('Inicio'); $event.preventDefault()" [class.active]="activeSection() === 'Inicio'">Inicio</a></li>
@@ -12,52 +12,54 @@
         <li><a href="#" (click)="changeSection('Perfil'); $event.preventDefault()" [class.active]="activeSection() === 'Perfil'">Mi Perfil</a></li>
       </ul>
     </nav>
-    <!-- Botones de autenticación en la esquina superior derecha -->
     <div class="button-container">
-      <button type="button" (click)="toggleLogin()">Iniciar Sesión</button>
-      <button type="button" (click)="toggleSignup()">Crear Cuenta</button>
+      <button id="showformLogin" type="button" (click)="toggleLogin()">Iniciar Sesión</button>
+      <button id="showformSignup" type="button" (click)="toggleSignup()">Crear Cuenta</button>
     </div>
   </header>
 
-  <!-- Contenido principal que cambia según la sección activa -->
   <main>
-    <!-- Sección de Inicio con carrusel y estadísticas -->
-    <section *ngIf="activeSection() === 'Inicio'" id="Inicio" class="section">
+    <!-- ===== INICIO ===== -->
+    <section *ngIf="activeSection() === 'Inicio'" id="Inicio" class="active">
+
+      <!-- Hero con carrusel fullscreen -->
       <div class="hero">
-        <!-- Carrusel de imágenes con controles de navegación -->
         <div class="carousel">
-          <div class="carousel-track">
-            <img class="carousel-slide" [class.active]="currentSlide() === i" *ngFor="let slide of slides(); let i = index" [src]="slide" [alt]="'Slide ' + (i+1)" />
-          </div>
+          <img *ngFor="let slide of slides(); let i = index"
+               class="carousel-slide"
+               [class.active]="currentSlide() === i"
+               [src]="slide" [alt]="'Slide ' + (i+1)" />
           <div class="carousel-dots">
-            <span class="dot" [class.active]="currentSlide() === i" *ngFor="let slide of slides(); let i = index" (click)="goToSlide(i)"></span>
+            <span *ngFor="let slide of slides(); let i = index"
+                  class="dot" [class.active]="currentSlide() === i"
+                  (click)="goToSlide(i)"></span>
           </div>
         </div>
         <div class="hero-text">
           <h1>El deporte de <span class="font-borel">Bolívar</span></h1>
-          <p>Encuentra eventos, equipos y espacios deportivos cerca de ti.</p>
+          <p>Encuentra eventos, equipos y espacios deportivos cerca de ti</p>
         </div>
       </div>
 
-      <!-- Tarjetas de estadísticas que muestran resumen del sistema -->
+      <!-- Estadísticas animadas -->
       <div class="stats">
         <div class="stat-card">
-          <h2 id="stat-eventos">{{ stats().eventos }}</h2>
+          <h2 id="stat-eventos">{{ statEventos() }}</h2>
           <p><a href="#" (click)="changeSection('Eventos'); $event.preventDefault()">Eventos <br><span class="font-borel-lil">activos</span></a></p>
         </div>
         <div class="stat-card">
-          <h2 id="stat-espacios">{{ stats().espacios }}</h2>
+          <h2 id="stat-espacios">{{ statEspacios() }}</h2>
           <p><a href="#" (click)="changeSection('Espacios'); $event.preventDefault()">Espacios <br><span class="font-borel-lil">disponibles</span></a></p>
         </div>
         <div class="stat-card">
-          <h2 id="stat-municipios">{{ stats().municipios }}</h2>
+          <h2 id="stat-municipios">{{ statMunicipios() }}</h2>
           <p>Municipios <br><span class="font-borel-lil">cubiertos</span></p>
         </div>
       </div>
     </section>
 
-    <!-- Sección de Eventos con carrusel de tarjetas -->
-    <section *ngIf="activeSection() === 'Eventos'" id="Eventos" class="section">
+    <!-- ===== EVENTOS ===== -->
+    <section *ngIf="activeSection() === 'Eventos'" id="Eventos" class="active">
       <div class="eventos-section">
         <div class="section-header">
           <button class="filtrar-btn" (click)="toggleFiltros()">
@@ -68,6 +70,7 @@
           </button>
         </div>
 
+        <!-- Eventos cerca de ti -->
         <div class="fila">
           <div class="fila-header">
             <span class="fila-titulo cerca">Eventos cerca de ti</span>
@@ -78,7 +81,7 @@
             <div class="carrusel" id="c1">
               <div class="evento-card cerca" *ngFor="let evento of eventosCercanosFiltrados" (click)="abrirModal(evento)">
                 <div class="card-img">
-                  <img [src]="imagenesDeporte[evento.deporte]" [alt]="evento.deporte">
+                  <img [src]="imagenesDeporte[evento.deporte] || 'assets/img/logo_color.png'" [alt]="evento.deporte" onerror="this.style.display='none'">
                 </div>
                 <div class="card-body">
                   <div class="card-nombre">{{ evento.nombre }}</div>
@@ -91,8 +94,7 @@
                 </div>
                 <div class="card-footer">
                   <svg class="icon-location" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                    <circle cx="12" cy="10" r="3"></circle>
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle>
                   </svg>
                   <span>{{ evento.municipio }}</span>
                 </div>
@@ -102,6 +104,7 @@
           </div>
         </div>
 
+        <!-- Eventos próximos -->
         <div class="fila">
           <div class="fila-header">
             <span class="fila-titulo proximo">Eventos próximos</span>
@@ -112,7 +115,7 @@
             <div class="carrusel" id="c2">
               <div class="evento-card proximo" *ngFor="let evento of eventosProximos()" (click)="abrirModal(evento)">
                 <div class="card-img">
-                  <img [src]="imagenesDeporte[evento.deporte]" [alt]="evento.deporte">
+                  <img [src]="imagenesDeporte[evento.deporte] || 'assets/img/logo_color.png'" [alt]="evento.deporte" onerror="this.style.display='none'">
                 </div>
                 <div class="card-body">
                   <div class="card-nombre">{{ evento.nombre }}</div>
@@ -125,8 +128,7 @@
                 </div>
                 <div class="card-footer">
                   <svg class="icon-location" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                    <circle cx="12" cy="10" r="3"></circle>
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle>
                   </svg>
                   <span>{{ evento.municipio }}</span>
                 </div>
@@ -135,81 +137,78 @@
             <button class="scroll-btn right" (click)="scrollCarrusel('c2', 1)">›</button>
           </div>
         </div>
+      </div>
 
-        <!-- Modal overlay para mostrar detalles del evento seleccionado -->
-        <div class="overlay" id="overlay" *ngIf="showModal()" (click)="cerrarModal()">
-          <div class="modal" (click)="$event.stopPropagation()">
-            <button class="modal-close" (click)="cerrarOverlay()">✕</button>
-            <div class="modal" id="modal">
-              <div class="modal-img" id="modal-img" [style.background]="selectedEvento()?.bg || '#e8f5e9'">
-                <span class="modal-emoji">{{ selectedEvento()?.emoji || '⚽' }}</span>
-              </div>
-              <div class="modal-body">
-                <div class="modal-titulo" id="modal-titulo">{{ selectedEvento()?.nombre }}</div>
-                <div class="modal-meta" id="modal-meta">{{ selectedEvento()?.fecha }} · {{ selectedEvento()?.hora }} · {{ selectedEvento()?.municipio }}</div>
-                <div class="modal-desc" id="modal-desc">{{ selectedEvento()?.descripcion }}</div>
-                <div class="modal-tags" id="modal-tags">
-                  <span class="tag" *ngFor="let tag of selectedEvento()?.tags">{{ tag }}</span>
-                </div>
-                <div class="modal-actions">
-                  <button class="btn-primary">Reservar cupo</button>
-                  <button class="btn-secondary">Guardar</button>
-                </div>
-              </div>
+      <!-- Modal de evento -->
+      <div class="overlay open" *ngIf="showModal()" (click)="cerrarModal()">
+        <button class="modal-close" (click)="cerrarOverlay()">✕</button>
+        <div class="modal" (click)="$event.stopPropagation()">
+          <div class="modal-img" id="modal-img"></div>
+          <div class="modal-body">
+            <div class="modal-titulo">{{ selectedEvento()?.nombre }}</div>
+            <div class="modal-meta">{{ selectedEvento()?.fecha }} · {{ selectedEvento()?.hora }} · {{ selectedEvento()?.municipio }}</div>
+            <div class="modal-desc">{{ selectedEvento()?.descripcion }}</div>
+            <div class="modal-tags">
+              <span class="tag">{{ selectedEvento()?.deporte }}</span>
+            </div>
+            <div class="modal-actions">
+              <button class="btn-primary">Reservar cupo</button>
+              <button class="btn-secondary">Guardar</button>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Sección de Espacios con buscador y filtros -->
-    <section *ngIf="activeSection() === 'Espacios'" id="Espacios" class="section">
+    <!-- ===== ESPACIOS ===== -->
+    <section *ngIf="activeSection() === 'Espacios'" id="Espacios" class="active">
       <div class="hero-img">
         <img src="assets/img/buscadorinst.png" alt="Instalaciones">
       </div>
 
       <div class="buscador-wrap">
         <div class="buscador-bar" (click)="toggleFiltros()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--color-text-tertiary);flex-shrink:0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#666;flex-shrink:0">
             <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
-          <input type="text" [(ngModel)]="buscadorTexto" placeholder="Buscar instalación" id="buscador-input" (click)="$event.stopPropagation(); abrirFiltros()" readonly>
-          <svg id="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--color-text-tertiary);flex-shrink:0;transition:transform 0.2s" [style.transform]="filtrosAbiertos() ? 'rotate(180deg)' : 'rotate(0deg)'">
+          <input type="text" placeholder="Buscar instalación" id="buscador-input"
+                 [(ngModel)]="buscadorTexto"
+                 (click)="$event.stopPropagation(); abrirFiltros()" />
+          <svg id="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               style="color:#666;flex-shrink:0;transition:transform 0.2s"
+               [style.transform]="filtrosAbiertos() ? 'rotate(180deg)' : 'rotate(0deg)'">
             <polyline points="6 9 12 15 18 9"/>
           </svg>
         </div>
 
-        <div class="filtros-panel" id="filtros-panel" *ngIf="filtrosAbiertos()">
+        <div class="filtros-panel" *ngIf="filtrosAbiertos()">
           <div class="filtros-grid">
             <div class="filtro-grupo">
               <div class="filtro-titulo">Zona</div>
               <div class="check-item" *ngFor="let zona of zonas">
-                <input type="checkbox" [id]="'z' + zona.id" [attr.data-tag]="zona.tag" (change)="actualizarTags($event)">
-                <label [for]="'z' + zona.id">{{ zona.nombre }}</label>
+                <input type="checkbox" [id]="'z'+zona.id" [attr.data-tag]="zona.tag" (change)="actualizarTags($event)">
+                <label [for]="'z'+zona.id">{{ zona.nombre }}</label>
               </div>
             </div>
-
             <div class="filtro-grupo">
               <div class="filtro-titulo">Municipio</div>
-              <div class="check-item" *ngFor="let municipio of municipios">
-                <input type="checkbox" [id]="'m' + municipio.id" [attr.data-tag]="municipio.nombre" (change)="actualizarTags($event)">
-                <label [for]="'m' + municipio.id">{{ municipio.nombre }}</label>
+              <div class="check-item" *ngFor="let m of municipios">
+                <input type="checkbox" [id]="'m'+m.id" [attr.data-tag]="m.nombre" (change)="actualizarTags($event)">
+                <label [for]="'m'+m.id">{{ m.nombre }}</label>
               </div>
             </div>
-
             <div class="filtro-grupo">
               <div class="filtro-titulo">Deporte</div>
-              <div class="check-item" *ngFor="let deporte of deportes">
-                <input type="checkbox" [id]="'d' + deporte.id" [attr.data-tag]="deporte.nombre" (change)="actualizarTags($event)">
-                <label [for]="'d' + deporte.id">{{ deporte.nombre }}</label>
+              <div class="check-item" *ngFor="let d of deportes">
+                <input type="checkbox" [id]="'d'+d.id" [attr.data-tag]="d.nombre" (change)="actualizarTags($event)">
+                <label [for]="'d'+d.id">{{ d.nombre }}</label>
               </div>
             </div>
-
             <div class="filtro-grupo">
-              <div class="filtro-titulo">Tipo de Instalación</div>
-              <div class="check-item" *ngFor="let tipo of tiposInstalacion">
-                <input type="checkbox" [id]="'t' + tipo.id" [attr.data-tag]="tipo.nombre" (change)="actualizarTags($event)">
-                <label [for]="'t' + tipo.id">{{ tipo.nombre }}</label>
+              <div class="filtro-titulo">Acceso</div>
+              <div class="check-item" *ngFor="let t of tiposInstalacion">
+                <input type="checkbox" [id]="'t'+t.id" [attr.data-tag]="t.nombre" (change)="actualizarTags($event)">
+                <label [for]="'t'+t.id">{{ t.nombre }}</label>
               </div>
             </div>
           </div>
@@ -219,6 +218,7 @@
           </div>
         </div>
       </div>
+
       <div class="tags-activos" id="tags-activos">
         <span class="tag-activo" *ngFor="let tag of filtrosSeleccionados()">
           {{ tag }}
@@ -227,29 +227,29 @@
       </div>
     </section>
 
-    <!-- Sección de Perfil del usuario -->
-    <section *ngIf="activeSection() === 'Perfil'" id="Perfil" class="section">
+    <!-- ===== PERFIL ===== -->
+    <section *ngIf="activeSection() === 'Perfil'" id="Perfil" class="active">
       <div class="perfil-page">
         <div class="col-izq">
           <div class="perfil-header">
             <div class="avatar-wrap">
               <div class="avatar">
-                <img src="assets/img/default-avatar.png" alt="Avatar">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                  <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                </svg>
               </div>
               <button class="cambiar-foto-btn">Cambiar Foto</button>
             </div>
-
             <div class="perfil-info">
-              <div class="username">@<span class="db-field" data-field="username">{{ perfilUsuario().username || 'nombre_usuario' }}</span></div>
-
+              <div class="username">@<span class="db-field">{{ perfilUsuario().username }}</span></div>
               <div class="meta-row">
-                <span class="meta-label">Edad:</span>
-                <span class="db-field" data-field="edad">{{ perfilUsuario().edad || '25' }}</span>
+                <span class="db-field">{{ perfilUsuario().municipio }}</span>
+                <span>, Colombia</span>
               </div>
-
               <div class="meta-row">
-                <span class="meta-label">Municipio:</span>
-                <span class="db-field" data-field="municipio">{{ perfilUsuario().municipio || 'Cartagena' }}</span>
+                <span class="db-field">{{ perfilUsuario().edad }}</span>
+                <span>años</span>
+                <span class="db-field">{{ perfilUsuario().genero }}</span>
               </div>
             </div>
           </div>
@@ -257,35 +257,35 @@
           <div class="section-grid">
             <div>
               <div class="section-label">Redes sociales</div>
-              <div class="social-icons" id="social-container">
-                <a *ngIf="perfilUsuario().instagram_url" href="{{ perfilUsuario().instagram_url }}" target="_blank">
-                  <img src="assets/img/instagram-icon.png" alt="Instagram">
+              <div class="social-icons">
+                <a href="#" class="social-link">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+                  </svg>
+                  Instagram
                 </a>
-                <a *ngIf="perfilUsuario().tiktok_url" href="{{ perfilUsuario().tiktok_url }}" target="_blank">
-                  <img src="assets/img/tiktok-icon.png" alt="TikTok">
-                </a>
-                <span *ngIf="!perfilUsuario().instagram_url && !perfilUsuario().tiktok_url" class="null-badge">Sin redes sociales</span>
               </div>
-            </div>
-
-            <div>
-              <div class="section-label">Equipo</div>
-              <div id="equipo-container">
-              <span *ngIf="!perfilUsuario().nombre_equipo" class="null-badge">Sin equipo</span>
-              <span *ngIf="perfilUsuario().nombre_equipo">{{ perfilUsuario().nombre_equipo }}</span>
+              <div class="social-icons" style="margin-top:6px">
+                <a href="#" class="social-link">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
+                  </svg>
+                  TikTok
+                </a>
               </div>
             </div>
           </div>
 
           <button class="editar-btn">Editar Perfil</button>
         </div>
+
         <div class="col-der">
           <div class="tabs">
             <button class="tab" [class.active]="activeTab() === 'Reservas'" (click)="changeTab('Reservas')">Mis Reservas</button>
             <button class="tab" [class.active]="activeTab() === 'Eventos'" (click)="changeTab('Eventos')">Mis Eventos</button>
             <button class="tab" [class.active]="activeTab() === 'Favoritos'" (click)="changeTab('Favoritos')">Mis Favoritos</button>
           </div>
-          <div class="tab-content" id="tab-content">
+          <div class="tab-content">
             <div *ngIf="activeTab() === 'Reservas'">Aquí irá el contenido de Mis Reservas...</div>
             <div *ngIf="activeTab() === 'Eventos'">Aquí irá el contenido de Mis Eventos...</div>
             <div *ngIf="activeTab() === 'Favoritos'">Aquí irá el contenido de Mis Favoritos...</div>
@@ -295,19 +295,19 @@
     </section>
   </main>
 
+  <!-- Footer -->
   <footer class="main-footer">
     <div class="footer-left">
-      <img src="assets/img/logoredondoblanco.png" alt="Logo Blanco" class="footer-img-one">
+      <img src="assets/img/logo_blanco.svg" alt="Logo Blanco" class="footer-img-one">
       <p>© 2026 Todos los derechos reservados · Proyecto Talento TECH</p>
     </div>
-
     <div class="footer-right">
       <p>MinTIC</p>
       <img src="assets/img/mintic_logo.svg" alt="MinTIC" class="footer-img-two">
     </div>
   </footer>
 
-  <!-- Crear cuenta -->
+  <!-- ===== SIGNUP MODAL ===== -->
   <div class="signup-container" id="signup-container" *ngIf="showSignup()">
     <div id="signupFormContainer" class="signupForm-container">
       <div class="board">
@@ -317,64 +317,54 @@
             <h1>Crea una <br>cuenta</h1>
             <p>Se parte de toda la experiencia deportiva en Bolívar</p>
             <div class="img-signup">
-              <img src="assets/img/signup-illustration.png" alt="Signup">
+              <dotlottie-wc src="assets/media/player.lottie" style="width:auto;height:130px" loop autoplay></dotlottie-wc>
             </div>
           </div>
         </div>
       </div>
-      <!-- Signup ingresos -->
       <div class="centersignform">
         <form id="signupForm" (ngSubmit)="crearCuenta($event)">
           <h2>Empecemos</h2>
-          <p class="loginredirectlink">¿Ya tienes una cuenta? <a href="#" (click)="toggleSignup(); toggleLogin(); $event.preventDefault()">Iniciar Sesión</a></p>
-          <!-- nombre -->
+          <p class="loginredirectlink">¿Ya tienes una cuenta? <a href="#" id="showformLoginLink" (click)="toggleSignup(); toggleLogin(); $event.preventDefault()">Iniciar Sesión</a></p>
           <div class="field-group">
             <label for="name" id="lablemargin">Nombre de Usuario</label>
             <input type="text" id="name" placeholder="Ingrese su nombre de usuario" required>
           </div>
-
           <div class="signflhorizontal">
-            <!-- edad -->
             <div class="field-group">
-              <label for="edad">Edad</label>
-              <input type="number" id="edad" placeholder="Edad" required>
+              <label for="age" id="lablemargin">Edad</label>
+              <input type="number" id="age" min="5" max="100" placeholder="Ingrese su edad" required>
             </div>
-            <!-- sexo -->
             <div class="field-group">
-              <label for="sexo">Sexo</label>
+              <label for="sexo" class="lablemargin">Sexo</label>
               <select id="sexo" required>
-                <option value="">Seleccionar</option>
-                <option value="M">Masculino</option>
-                <option value="F">Femenino</option>
-                <option value="O">Otro</option>
+                <option value="">Selecciona tu sexo</option>
+                <option value="femenino">Femenino</option>
+                <option value="masculino">Masculino</option>
               </select>
             </div>
           </div>
           <div class="field-group">
-            <!-- municipio -->
             <label for="municipio" class="lablemargin">Municipio</label>
-            <select id="municipio" name="municipio" required>
-              <option value="">Seleccionar municipio</option>
+            <select id="municipio" required>
+              <option value="">Selecciona tu municipio</option>
               <option *ngFor="let m of municipios" [value]="m.nombre">{{ m.nombre }}</option>
             </select>
           </div>
-          <!-- telefono -->
           <div class="field-group">
             <label for="tel" id="lablemargin">Teléfono</label>
             <input type="tel" id="tel" placeholder="Ingrese su número de teléfono" required>
           </div>
           <div class="signflhorizontal">
-            <!-- correo -->
             <div class="field-group">
-              <label for="signup-email">Correo</label>
-              <input type="email" id="signup-email" placeholder="usuario@ejemplo.com" required>
+              <label for="signup-email" id="lablemargin">Email</label>
+              <input type="email" id="signup-email" placeholder="Ingrese su email" required>
             </div>
-            <!-- contraseña -->
             <div class="field-group">
-              <label for="signup-password">Contraseña</label>
+              <label for="signup-password" id="lablemargin">Contraseña</label>
               <div class="input-eye-wrapper">
-                <input type="password" id="signup-password" placeholder="Contraseña" required>
-                <button type="button" class="toggle-eye" data-target="signup-password">👁</button>
+                <input type="password" id="signup-password" placeholder="Ingrese su contraseña" required>
+                <span class="toggle-eye">👁️</span>
               </div>
             </div>
           </div>
@@ -384,59 +374,44 @@
         </form>
       </div>
     </div>
-    <div class="cut-button" id="signupCutButton" (click)="toggleSignup()">✕</div>
+    <div class="cut-button" id="signupCutButton" (click)="toggleSignup()">&#10005;</div>
   </div>
 
+  <!-- ===== LOGIN MODAL ===== -->
   <div class="login-container" id="login-container" *ngIf="showLogin()">
     <div id="loginFormContainer" class="loginForm-container">
-
-      <!-- Panel izquierdo (board) -->
       <div class="board">
         <div class="board-back board-back--login">
           <div class="board-details">
             <h3>¡Regresaste!</h3>
             <h1>Es bueno verte nuevamente</h1>
             <p>Inicia Sesión para recuperar tu cuenta</p>
-            <div class="img-signup">
-              <img src="assets/img/login-illustration.png" alt="Login">
-            </div>
+            <dotlottie-wc src="assets/media/Soccer_Ball.lottie" style="width:100px;height:100px" loop autoplay></dotlottie-wc>
           </div>
         </div>
       </div>
-
-      <!-- Formulario derecho -->
       <div class="centersignform">
         <form id="loginForm" (ngSubmit)="iniciarSesion($event)">
           <h2>¡Hola de nuevo!</h2>
-          <p class="loginredirectlink">
-            ¿No tienes cuenta?
-            <a href="#" (click)="toggleLogin(); toggleSignup(); $event.preventDefault()">Crear Cuenta</a>
-          </p>
-          <div class="img-signup">
-          </div>
-
-          <!-- Email -->
+          <p class="loginredirectlink">¿No tienes cuenta? <a href="#" id="showformSignupLink" (click)="toggleLogin(); toggleSignup(); $event.preventDefault()">Crear Cuenta</a></p>
           <div class="field-group">
             <label for="login-email">Email</label>
             <input type="email" id="login-email" placeholder="Ingrese su email" required>
           </div>
-
-          <!-- Contraseña -->
           <div class="field-group">
             <label for="login-password">Contraseña</label>
             <div class="input-eye-wrapper">
-              <input type="password" id="login-password" placeholder="Contraseña" required>
-              <button type="button" class="toggle-eye" data-target="login-password">👁</button>
+              <input type="password" id="login-password" placeholder="Ingrese su contraseña" required>
+              <span class="toggle-eye">👁️</span>
             </div>
           </div>
-
           <div>
             <button type="submit">Iniciar Sesión</button>
           </div>
         </form>
       </div>
-
     </div>
-    <div class="cut-button" id="loginCutButton" (click)="toggleLogin()">✕</div>
+    <div class="cut-button" id="loginCutButton" (click)="toggleLogin()">&#10005;</div>
   </div>
+
 </div>
