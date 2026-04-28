@@ -117,6 +117,22 @@ export class App implements OnInit, OnDestroy {
   // Modales
   toggleLogin() { this.showLogin.set(!this.showLogin()); if (this.showSignup()) this.showSignup.set(false); }
   toggleSignup() { this.showSignup.set(!this.showSignup()); if (this.showLogin()) this.showLogin.set(false); }
+  toggleFiltros() { this.filtrosAbiertos.set(!this.filtrosAbiertos()); }
+  abrirFiltros() { this.filtrosAbiertos.set(true); }
+  cerrarOverlay() {
+    this.showLogin.set(false);
+    this.showSignup.set(false);
+    this.filtrosAbiertos.set(false);
+  }
+  crearCuenta(event: Event) {
+    event.preventDefault();
+    this.showSignup.set(false);
+    this.showLogin.set(true);
+  }
+  iniciarSesion(event: Event) {
+    event.preventDefault();
+    this.showLogin.set(false);
+  }
 
   // Cargar eventos
   private cargarEventos() {
@@ -174,7 +190,7 @@ export class App implements OnInit, OnDestroy {
     this.apiService.getUsuarios().subscribe({
       next: (users) => {
         if (users && users.length > 0) {
-          const user = users[0];
+          const user = users[0] as any;
           this.perfilUsuario.set({
             username: user.nomUsu || 'usuario',
             edad: user.edad || 0,
